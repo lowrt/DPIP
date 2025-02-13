@@ -2,9 +2,9 @@ name: DPIP
 
 on:
   push:
-    branches: ["main"]
+    branches: ["test"]
   pull_request:
-    branches: ["main"]
+    branches: ["test"]
 
 jobs:
   build-app:
@@ -54,28 +54,28 @@ jobs:
     - name: Upload (apk)
 
       if: matrix.platform == 'ubuntu-latest'
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v3
       with:
         name: "DPIP.apk"
         path: build/app/outputs/flutter-apk/*.apk
 
     - name: Upload (aab)
       if: matrix.platform == 'ubuntu-latest'
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v3
       with:
         name: "DPIP.aab"
         path: build/app/outputs/bundle/release/*.aab
 
     - name: Upload (app)
       if: matrix.platform == 'macos-latest'
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v3
       with:
         name: "DPIP.app"
-        path: /Users/runner/work/DPIP/DPIP/build/ios/iphoneos/Runner.app
+        path: build/ios/iphoneos/Runner.app
 
     - name: Upload (ipa)
       if: matrix.platform == 'macos-latest'
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v3
       with:
         name: "DPIP.ipa"
         path: DPIP.ipa
