@@ -8,6 +8,8 @@ on:
 
 jobs:
   build-app:
+    env:
+      FLUTTER_HOME: ${{ runner.tool_cache }}/flutter
     strategy:
       fail-fast: false
       matrix:
@@ -23,6 +25,16 @@ jobs:
         distribution: "zulu"
         java-version: "17"
 
+    - name: Cache Flutter SDK & Pub
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.pub-cache
+          ${{ env.FLUTTER_HOME }}
+        key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-flutter-
+
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -32,7 +44,7 @@ jobs:
       run: flutter pub get --no-example
 
     - name: Prebuild
-      run: dart run build_runner build --delete-conflicting-outputs
+      run: dart run build_runner build --delete-conflicting-outputs --verbose
 
     - name: Build Android application (apk, aab)
       if: matrix.platform == 'ubuntu-latest'
@@ -42,7 +54,7 @@ jobs:
 
     - name: Build iOS application (app)
       if: matrix.platform == 'macos-latest'
-      run: flutter build ios --debug --no-codesign
+      run: flutter build ios --debug --no-codesign --simulator
 
     - name: Package IPA
       if: matrix.platform == 'macos-latest'
