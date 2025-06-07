@@ -8,8 +8,6 @@ on:
 
 jobs:
   build-app:
-    env:
-      FLUTTER_HOME: ${{ runner.tool_cache }}/flutter
     strategy:
       fail-fast: false
       matrix:
