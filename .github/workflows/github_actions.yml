@@ -40,8 +40,8 @@ jobs:
         dry-run: true
     - run: |
         # Always print the latest stable version.
-        echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
-        echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
+        echo CHANNEL= stable
+        echo VERSION= 3.32.2
       shell: bash
 
     - name: Flutter get
