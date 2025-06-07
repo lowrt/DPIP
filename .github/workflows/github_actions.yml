@@ -30,7 +30,7 @@ jobs:
       with:
         path: |
           ~/.pub-cache
-          ${{ env.FLUTTER_HOME }}
+          /Users/runner/hostedtoolcache/flutter
         key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
         restore-keys: |
           ${{ runner.os }}-flutter-
