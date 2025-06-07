@@ -37,12 +37,8 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         channel: stable
-        dry-run: true
-    - run: |
-        # Always print the latest stable version.
-        echo CHANNEL= stable
-        echo VERSION= 3.32.2
-      shell: bash
+      env:
+        FLUTTER_HOME: ${{ runner.tool_cache }}/flutter
 
     - name: Flutter get
       run: flutter pub get --no-example
@@ -54,7 +50,7 @@ jobs:
       if: matrix.platform == 'ubuntu-latest'
       run: |
         flutter build apk --debug
-        flutter build aab --debug
+        # flutter build aab --debug
 
     - name: Build iOS application (app)
       if: matrix.platform == 'macos-latest'
