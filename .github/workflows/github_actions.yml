@@ -37,12 +37,18 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         channel: stable
+        dry-run: true
+    - run: |
+        # Always print the latest stable version.
+        echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
+        echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
+      shell: bash
 
     - name: Flutter get
       run: flutter pub get --no-example
 
     - name: Prebuild
-      run: dart run build_runner build --delete-conflicting-outputs --verbose
+      run: dart run build_runner build --delete-conflicting-outputs
 
     - name: Build Android application (apk, aab)
       if: matrix.platform == 'ubuntu-latest'
@@ -52,7 +58,7 @@ jobs:
 
     - name: Build iOS application (app)
       if: matrix.platform == 'macos-latest'
-      run: flutter build ios --debug --no-codesign --simulator
+      run: flutter build ios --debug --no-codesign
 
     - name: Package IPA
       if: matrix.platform == 'macos-latest'
