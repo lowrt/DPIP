@@ -19,7 +19,7 @@ on:
       - "pubspec.lock"
 
 jobs:
-  android:
+  Android:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +28,7 @@ jobs:
     - name: Cache Flutter SDK
       uses: actions/cache@v3
       with:
-        path: ${{ env.FLUTTER_HOME }}
+        path: /opt/hostedtoolcache/flutter
         key: ubuntu-flutter-${{ env.FLUTTER_VERSION }}
         restore-keys: |
           ubuntu-flutter-
@@ -60,7 +60,26 @@ jobs:
     - name: Prebuild with build_runner
       run: dart run build_runner build --delete-conflicting-outputs
 
-    - name: Build APK and AAB
+    - name: Setup Android SDK components
+      run: |
+        yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses
+        sdkmanager --sdk_root=$ANDROID_SDK_ROOT "ndk;27.0.12077973" "platforms;android-33" "build-tools;33.0.2"
+
+    - name: Cache Android SDK
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.ANDROID_SDK_ROOT }}
+        key: android-sdk-${{ hashFiles('**/build.gradle') }}
+        restore-keys: android-sdk-
+
+    - name: Cache Gradle
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: gradle-cache-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: gradle-cache-
+
+    - name: Build APK
       run: |
         flutter build apk --debug
         # flutter build aab --debug
