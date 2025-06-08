@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ANDROID_SDK_ROOT: /usr/local/android-sdk
-      PATH: ${{ env.PATH }}:/usr/local/android-sdk/cmdline-tools/latest/bin
+      PATH: /usr/local/android-sdk/cmdline-tools/latest/bin:$PATH
 
     steps:
     - uses: actions/checkout@v4
