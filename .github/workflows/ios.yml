@@ -21,8 +21,6 @@ on:
 jobs:
   ios:
     runs-on: macos-latest
-    env:
-      FLUTTER_HOME: ${{ runner.tool_cache }}/flutter
 
     steps:
     - uses: actions/checkout@v4
