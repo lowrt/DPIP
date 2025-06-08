@@ -68,7 +68,7 @@ jobs:
         zip -r DPIP.ipa Payload
 
     - name: Upload iOS Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@main
       with:
         name: "DPIP-iOS"
         path: |
