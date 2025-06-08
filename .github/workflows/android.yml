@@ -50,18 +50,18 @@ jobs:
     - name: Prebuild with build_runner
       run: dart run build_runner build --delete-conflicting-outputs
 
-    - name: Build APK
+    - name: Build apk
       run: |
         flutter build apk --debug
         # flutter build aab --debug
 
-    - name: Upload Android Artifacts
+    - name: Upload (apk) Artifacts
       uses: actions/upload-artifact@main
       with:
         name: "DPIP.apk"
         path: build/app/outputs/flutter-apk/*.apk
 
-    - name: Upload Android Artifacts
+    - name: Upload (aab) Artifacts
       uses: actions/upload-artifact@main
       with:
         name: "DPIP.aab"
