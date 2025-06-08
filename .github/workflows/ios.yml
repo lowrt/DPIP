@@ -38,14 +38,6 @@ jobs:
       with:
         flutter-version: ${{ env.FLUTTER_VERSION }}
 
-    - name: Cache Pub Packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.pub-cache
-        key: macos-pub-${{ hashFiles('**/pubspec.lock') }}
-        restore-keys: |
-          macos-pub-
-
     - name: Cache build_runner (Optional)
       uses: actions/cache@v3
       with:
@@ -53,14 +45,6 @@ jobs:
         key: macos-build-runner-${{ hashFiles('**/*.dart') }}
         restore-keys: |
           macos-build-runner-
-
-    - name: Cache Pub Packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.pub-cache
-        key: macos-pub-${{ hashFiles('**/pubspec.lock') }}
-        restore-keys: |
-          macos-pub-
 
     - name: Cache CocoaPods Pods
       uses: actions/cache@v3
@@ -82,7 +66,7 @@ jobs:
     - name: Install iOS Pods
       run: |
         cd ios
-        pod install
+        pod install --deployment
 
     - name: Prebuild with build_runner
       run: dart run build_runner build --delete-conflicting-outputs
