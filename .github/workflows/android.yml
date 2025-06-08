@@ -4,6 +4,7 @@ on:
   push:
     branches: ["test"]
     paths:
+      - ".github/**"
       - "lib/**"
       - "android/**"
       - "pubspec.yaml"
@@ -11,6 +12,7 @@ on:
   pull_request:
     branches: ["test"]
     paths:
+      - ".github/**"
       - "lib/**"
       - "android/**"
       - "pubspec.yaml"
@@ -19,29 +21,9 @@ on:
 jobs:
   Android:
     runs-on: ubuntu-latest
-    env:
-      ANDROID_SDK_ROOT: /usr/local/android-sdk
-      PATH: /usr/local/android-sdk/cmdline-tools/latest/bin:$PATH
 
     steps:
     - uses: actions/checkout@v4
-  
-    - name: Install cmdline-tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget unzip
-        mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-        cd $ANDROID_SDK_ROOT/cmdline-tools
-        wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-        unzip cmdline-tools.zip
-        rm cmdline-tools.zip
-        mv cmdline-tools latest
-
-    - name: Accept Android licenses
-      run: yes | sdkmanager --licenses
-
-    - name: Install required SDK packages
-      run: sdkmanager "ndk;27.0.12077973" "platforms;android-33" "build-tools;33.0.2"
 
     - name: Cache Flutter SDK
       uses: actions/cache@v3
@@ -78,25 +60,6 @@ jobs:
     - name: Prebuild with build_runner
       run: dart run build_runner build --delete-conflicting-outputs
 
-    - name: Setup Android SDK components
-      run: |
-        yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses
-        sdkmanager --sdk_root=$ANDROID_SDK_ROOT "ndk;27.0.12077973" "platforms;android-33" "build-tools;33.0.2"
-
-    - name: Cache Android SDK
-      uses: actions/cache@v3
-      with:
-        path: ${{ env.ANDROID_SDK_ROOT }}
-        key: android-sdk-${{ hashFiles('**/build.gradle') }}
-        restore-keys: android-sdk-
-
-    - name: Cache Gradle
-      uses: actions/cache@v3
-      with:
-        path: ~/.gradle/caches
-        key: gradle-cache-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: gradle-cache-
-
     - name: Build APK
       run: |
         flutter build apk --debug
@@ -105,7 +68,11 @@ jobs:
     - name: Upload Android Artifacts
       uses: actions/upload-artifact@main
       with:
-        name: "DPIP-Android"
-        path: |
-          build/app/outputs/flutter-apk/*.apk
-          build/app/outputs/bundle/release/*.aab
+        name: "DPIP.apk"
+        path: build/app/outputs/flutter-apk/*.apk
+
+    - name: Upload Android Artifacts
+      uses: actions/upload-artifact@main
+      with:
+        name: "DPIP.aab"
+        path: build/app/outputs/bundle/release/*.aab
