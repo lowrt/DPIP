@@ -1,0 +1,66 @@
+name: Build iOS
+
+on:
+  push:
+    branches: ["test"]
+  pull_request:
+    branches: ["test"]
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    env:
+      FLUTTER_HOME: ${{ runner.tool_cache }}/flutter
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Cache Flutter SDK
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.FLUTTER_HOME }}
+        key: macos-flutter-${{ env.FLUTTER_VERSION }}
+        restore-keys: |
+          macos-flutter-
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+
+    - name: Cache Pub Packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.pub-cache
+        key: macos-pub-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          macos-pub-
+
+    - name: Cache build_runner (Optional)
+      uses: actions/cache@v3
+      with:
+        path: .dart_tool/build
+        key: macos-build-runner-${{ hashFiles('**/*.dart') }}
+        restore-keys: |
+          macos-build-runner-
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Prebuild with build_runner
+      run: dart run build_runner build --delete-conflicting-outputs
+
+    - name: Build iOS App and IPA
+      run: |
+        flutter build ios --debug --no-codesign
+        mkdir -p Payload
+        cp -R build/ios/iphoneos/Runner.app Payload/Runner.app
+        zip -r DPIP.ipa Payload
+
+    - name: Upload iOS Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: "DPIP-iOS"
+        path: |
+          build/ios/iphoneos/Runner.app
+          DPIP.ipa
