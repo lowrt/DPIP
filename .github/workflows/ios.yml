@@ -28,10 +28,10 @@ jobs:
     - name: Cache Flutter SDK
       uses: actions/cache@v3
       with:
-        path: ${{ env.FLUTTER_HOME }}
-        key: macos-flutter-${{ env.FLUTTER_VERSION }}
+        path: ~/.pub-cache
+        key: macos-pub-${{ hashFiles('**/pubspec.lock') }}
         restore-keys: |
-          macos-flutter-
+          macos-pub-
 
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -67,10 +67,16 @@ jobs:
         cp -R build/ios/iphoneos/Runner.app Payload/Runner.app
         zip -r DPIP.ipa Payload
 
-    - name: Upload iOS Artifacts
+    - name: Upload (app) Artifacts
       uses: actions/upload-artifact@main
       with:
-        name: "DPIP-iOS"
+        name: "DPIP.app"
         path: |
           build/ios/iphoneos/Runner.app
+
+    - name: Upload (ipa) Artifacts
+      uses: actions/upload-artifact@main
+      with:
+        name: "DPIP.ipa"
+        path: |
           DPIP.ipa
