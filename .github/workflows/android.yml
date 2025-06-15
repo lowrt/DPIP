@@ -2,13 +2,13 @@ name: Build Android
 
 on:
   push:
-    branches: ["main"]
+    branches: ["test2"]
     paths:
       - "lib/**"
       - "android/**"
       - "pubspec.yaml"
   pull_request:
-    branches: ["main"]
+    branches: ["test2"]
     paths:
       - "lib/**"
       - "android/**"
