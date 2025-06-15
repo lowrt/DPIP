@@ -96,5 +96,5 @@ dependencies {
 }
 
 configurations.all {
-    exclude group: 'io.flutter', module: 'x86_debug'
+    exclude group: 'io.flutter', module: 'x86_debug' 
 }
