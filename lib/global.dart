@@ -48,8 +48,19 @@ class Global {
   static Future<void> loadNotifyTestContent() async {
     final data = await rootBundle.loadJson('assets/notify_test.json');
 
+    Map<String, dynamic> resolve(String key) {
+      final value = data[key];
+      if (value is String) {
+        return resolve(value);
+      } else if (value is Map<String, dynamic>) {
+        return value;
+      } else {
+        throw Exception('Invalid value for key $key: $value');
+      }
+    }
+
     notifyTestContent = data.map((type, value) {
-      final map = value as Map<String, dynamic>;
+      final map = resolve(type);
       return MapEntry(type, (title: map['title'].toString(), body: map['body'].toString()));
     });
   }
