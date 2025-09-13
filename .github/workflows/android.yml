@@ -65,7 +65,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /usr/local/lib/android/sdk/cmake
-        key: ubuntu-android-cmake-${{ github.ref_name }}
+        key: ubuntu-android-cmake
         restore-keys: ubuntu-android-cmake-
 
     - name: Install dependencies
