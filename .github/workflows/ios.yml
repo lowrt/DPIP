@@ -2,9 +2,9 @@ name: Build iOS
 
 on:
   push:
-    branches: ["main"]
+    branches: ["test4"]
   pull_request:
-    branches: ["main"]
+    branches: ["test4"]
 
 jobs:
   changes:
