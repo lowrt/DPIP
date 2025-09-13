@@ -51,7 +51,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: .dart_tool/build
-        key: macos-build-runner-${{ hashFiles('**/*.dart') }}
+        key: macos-build-runner-${{ hashFiles('lib/api/model/**/*.dart') }}
         restore-keys: |
           macos-build-runner-
 
@@ -78,11 +78,11 @@ jobs:
         pod install
 
     - name: Prebuild with build_runner
-      run: dart run build_runner build --delete-conflicting-outputs
+      run: dart run build_runner build
 
     - name: Build iOS App and IPA
       run: |
-        flutter build ios --debug --no-codesign
+        flutter build ios --debug --no-codesign --split-debug-info=build/symbols
         mkdir -p Payload
         cp -R build/ios/iphoneos/Runner.app Payload/Runner.app
         zip -r DPIP.ipa Payload
