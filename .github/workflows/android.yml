@@ -48,7 +48,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: .dart_tool/build
-        key: ubuntu-build-runner-${{ hashFiles('**/*.dart') }}
+        key: ubuntu-build-runner-${{ hashFiles('lib/api/model/**/*.dart') }}
         restore-keys: |
           ubuntu-build-runner-
 
@@ -72,7 +72,7 @@ jobs:
       run: flutter pub get
 
     - name: Prebuild with build_runner
-      run: dart run build_runner build --delete-conflicting-outputs
+      run: dart run build_runner build
 
     - name: Build apk
       run: |
