@@ -58,8 +58,6 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-          ~/.gradle/daemon
-          ~/.gradle/native
         key: ubuntu-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: ubuntu-gradle-
 
@@ -67,8 +65,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /usr/local/lib/android/sdk/cmake
-        key: ubuntu-android-cmake
-        restore-keys: ubuntu-android-cmake
+        key: ubuntu-android-cmake-${{ github.ref_name }}
+        restore-keys: ubuntu-android-cmake-
 
     - name: Install dependencies
       run: flutter pub get
