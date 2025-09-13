@@ -63,17 +63,10 @@ jobs:
         key: ubuntu-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: ubuntu-gradle-
 
-    - name: Cache Android SDK
-      uses: actions/cache@v3
-      with:
-        path: /usr/local/lib/android/sdk/platforms
-        key: ubuntu-android-platforms
-        restore-keys: ubuntu-android-platforms
-
     - name: Cache CMake
       uses: actions/cache@v3
       with:
-        path: /usr/local/lib/android/cmake
+        path: /usr/local/lib/android/sdk/cmake
         key: ubuntu-android-cmake
         restore-keys: ubuntu-android-cmake
 
