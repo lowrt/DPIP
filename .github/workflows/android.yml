@@ -2,9 +2,9 @@ name: Build Android
 
 on:
   push:
-    branches: ["main"]
+    branches: ["tset4"]
   pull_request:
-    branches: ["main"]
+    branches: ["tset4"]
 
 jobs:
   changes:
@@ -56,8 +56,11 @@ jobs:
         path: |
           ~/.gradle/caches/modules-2
           ~/.gradle/wrapper
-        key: ubuntu-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: ubuntu-gradle-
+        key: ubuntu-gradle-${{ env.AGP_VERSION }}-${{ env.KOTLIN_VERSION }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ubuntu-gradle-${{ env.AGP_VERSION }}-${{ env.KOTLIN_VERSION }}-
+          ubuntu-gradle-${{ env.AGP_VERSION }}-
+          ubuntu-gradle-
 
     - name: Install dependencies
       run: flutter pub get
