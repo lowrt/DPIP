@@ -40,9 +40,7 @@ jobs:
     - name: Cache Pub Packages
       uses: actions/cache@v3
       with:
-        path: ~/.pub-cache
-        key: ubuntu-pub-${{ hashFiles('**/pubspec.lock') }}
-        restore-keys: ubuntu-pub-
+        cache: true
 
     - name: Cache build_runner (Optional)
       uses: actions/cache@v3
@@ -51,8 +49,20 @@ jobs:
         key: ubuntu-build-runner-${{ hashFiles('lib/api/model/**/*.dart') }}
         restore-keys: ubuntu-build-runner-
 
-    - name: Gradle cache
-      uses: gradle/actions/setup-gradle@v5
+    - name: Cache gradle and sdk
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-gradle-and-sdk
+      with:
+        path: |
+          ${{ github.workspace }}/.opt/cache/gradle/wrapper
+          ${{ github.workspace }}/.opt/cache/gradle/caches
+          ${{ github.workspace }}/.opt/sdk
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/wrapper/gradle-wrapper.properties', '**/build.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
 
     - name: Install dependencies
       run: flutter pub get
