@@ -40,7 +40,9 @@ jobs:
     - name: Cache Pub Packages
       uses: actions/cache@v3
       with:
-        cache: true
+        path: ~/.pub-cache
+        key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+        restore-keys: ${{ runner.os }}-pub-
 
     - name: Cache build_runner (Optional)
       uses: actions/cache@v3
