@@ -35,6 +35,7 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
 
     - name: Cache Pub Packages
       uses: actions/cache@v3
@@ -50,17 +51,8 @@ jobs:
         key: ubuntu-build-runner-${{ hashFiles('lib/api/model/**/*.dart') }}
         restore-keys: ubuntu-build-runner-
 
-    - name: Cache Gradle
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches/modules-2
-          ~/.gradle/wrapper
-        key: ubuntu-gradle-${{ env.AGP_VERSION }}-${{ env.KOTLIN_VERSION }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ubuntu-gradle-${{ env.AGP_VERSION }}-${{ env.KOTLIN_VERSION }}-
-          ubuntu-gradle-${{ env.AGP_VERSION }}-
-          ubuntu-gradle-
+    - name: Gradle cache
+      uses: gradle/actions/setup-gradle@v5
 
     - name: Install dependencies
       run: flutter pub get
