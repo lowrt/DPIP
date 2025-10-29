@@ -59,6 +59,7 @@ jobs:
         path: |
           ~/.gradle/wrapper
           ~/.gradle/caches
+          ${{ env.ANDROID_SDK_ROOT }}
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/wrapper/gradle-wrapper.properties', '**/build.gradle') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
