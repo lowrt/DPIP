@@ -2,9 +2,9 @@ name: Build iOS
 
 on:
   push:
-    branches: ["main"]
+    branches: ["tset4"]
   pull_request:
-    branches: ["main"]
+    branches: ["tset4"]
 
 jobs:
   changes:
@@ -35,6 +35,7 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
 
     - name: Cache Pub Packages
       uses: actions/cache@v3
@@ -54,15 +55,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ios/Pods
-        key: ios-pods-${{ hashFiles('ios/Podfile.lock') }}
-        restore-keys: ios-pods-
-
-    - name: Cache CocoaPods Repo
-      uses: actions/cache@v3
-      with:
-        path: ~/.cocoapods
-        key: cocoapods-repo-${{ hashFiles('ios/Podfile.lock') }}
-        restore-keys: cocoapods-repo-
+        key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+        restore-keys: ${{ runner.os }}-pods-
 
     - name: Install dependencies
       run: flutter pub get
