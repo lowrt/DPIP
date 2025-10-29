@@ -51,7 +51,7 @@ jobs:
         key: ${{ runner.os }}-build-${{ hashFiles('lib/api/model/**/*.dart') }}
         restore-keys: ${{ runner.os }}-build-
 
-    - name: Cache gradle and sdk
+    - name: Cache gradle
       uses: actions/cache@v3
       env:
         cache-name: cache-gradle-and-sdk
