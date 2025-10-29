@@ -48,8 +48,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: .dart_tool/build
-        key: ${{ runner.os }}-build-runner-${{ hashFiles('lib/api/model/**/*.dart') }}
-        restore-keys: ${{ runner.os }}-build-runner-
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('lib/api/model/**/*.dart') }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
     - name: Cache CocoaPods Pods
       uses: actions/cache@v3
