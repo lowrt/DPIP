@@ -59,7 +59,6 @@ jobs:
         path: |
           ${{ github.workspace }}/.opt/cache/gradle/wrapper
           ${{ github.workspace }}/.opt/cache/gradle/caches
-          ${{ github.workspace }}/.opt/sdk
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/wrapper/gradle-wrapper.properties', '**/build.gradle') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
